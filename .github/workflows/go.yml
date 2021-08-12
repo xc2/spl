@@ -2,25 +2,27 @@ name: Go
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
+    env:
+      RELEASE_DIR: release
+      BINARY_NAME: spl
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.16
-    - name: Install Dependencies
-      run: go mod download
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16
+      - name: Install Dependencies
+        run: go mod download
 
-    - name: Build
-      run: |
-        rm -rf release
-        ./build_release.bash
-        ls -allh release/
-        file release/*
+      - name: Build
+        run: |
+          rm -rf "$RELEASE_DIR"
+          ./build_release.bash
+          ls -allh $RELEASE_DIR/
+          file $RELEASE_DIR/*
