@@ -30,5 +30,7 @@ jobs:
           rm -rf "${RELEASE_DIR}"
           export RELEASE_VER="${{ github.event.inputs.version }}"
           ./build_release
-          ls -allh "${RELEASE_DIR}/"
-          file "${RELEASE_DIR}/*"
+          cd "${RELEASE_DIR}"
+          ls -allh
+          file *
+          ./${BINARY_NAME}-${{ github.event.inputs.version }}-linux-amd64 -v
