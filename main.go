@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	sprig "github.com/Masterminds/sprig"
 	"os"
 	"text/template"
 )
@@ -24,20 +25,31 @@ func main() {
 
 	f.Var((mapVar)(vars), "var", "")
 
-	f.Var(outfile, "outfile", "")
+	f.Var(&outfile, "outfile", "")
 
 	err := f.Parse(os.Args[1:])
-	if err != nil {
-		panic(err)
-	}
-
-	tmpl, err := template.ParseFiles(f.Arg(0))
 
 	if err != nil {
 		panic(err)
 	}
 
-	err = tmpl.Execute(outfile.file, GetEnvirons())
+	infile := f.Arg(0)
+	if infile == "" {
+		infile = "-"
+	}
+
+	tmpl := template.New(infile)
+	tmpl.Option("missingkey=zero")
+
+	tmpl.Funcs(sprig.GenericFuncMap())
+
+	err = TemplateParseFile(tmpl, infile)
+
+	if err != nil {
+		panic(err)
+	}
+
+	err = tmpl.Execute(outfile.file, vars)
 	if err != nil {
 		panic(err)
 	}
