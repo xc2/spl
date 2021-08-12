@@ -20,3 +20,5 @@ steps:
     parameters:
       bin: spl
       version: $(RELEASE_VERSION)
+  - publish: $(System.DefaultWorkingDirectory)/release
+    artifact: spl
