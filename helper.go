@@ -33,6 +33,7 @@ func TemplateParseFile(t *template.Template, filename string) error {
 		return err
 	}
 	s := string(b)
+	s += "\n"
 
 	_, err = t.Parse(s)
 	if err != nil {
