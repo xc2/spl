@@ -28,8 +28,9 @@ steps:
   - ${{ each target in parameters.targets }}:
       - task: Go@0
         displayName: "Build for ${{ target.os }}/${{ target.arch }}"
-        command: build
-        arguments: "-ldflags '-w -s -X main.CliName=${{ parameters.bin }} -X main.CliVersion=${{ parameters.version }}' -o '${{ parameters.releaseDir }}/${{ parameters.bin }}-${{ parameters.version }}-${{ target.os }}-${{ target.arch }}'"
+        inputs:
+          command: build
+          arguments: "-ldflags '-w -s -X main.CliName=${{ parameters.bin }} -X main.CliVersion=${{ parameters.version }}' -o '${{ parameters.releaseDir }}/${{ parameters.bin }}-${{ parameters.version }}-${{ target.os }}-${{ target.arch }}'"
         env:
           CGO_ENABLED: 0
           GOOS: ${{ target.os }}
