@@ -37,4 +37,4 @@ steps:
           GOARCH: ${{ target.arch }}
   - script: |
       ls -allh '${{ parameters.releaseDir }}'
-      file '${{ parameters.releaseDir }}/*'
+      file '${{ parameters.releaseDir }}/'*
