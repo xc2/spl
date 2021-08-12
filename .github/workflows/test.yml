@@ -3,6 +3,7 @@ name: Build Test
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -19,4 +20,4 @@ jobs:
         run: go build -v .
 
       - name: Test
-        run: echo 'Current Directory is `{{ env "PWD" }}`, input var of `foo` is `{{ .foo }}`' | ./spl -v 'foo=bar'
+        run: echo 'Current Directory is `{{ env "PWD" }}`, input var of `foo` is `{{ .foo }}`' | ./spl -var 'foo=bar'

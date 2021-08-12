@@ -3,13 +3,19 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/Masterminds/sprig"
 	"os"
 	"text/template"
+
+	"github.com/Masterminds/sprig"
+)
+
+var (
+	CliName    = "spl"
+	CliVersion = "UNTAGGED"
 )
 
 func main() {
-	f := flag.NewFlagSet("spl", flag.ExitOnError)
+	f := flag.NewFlagSet(CliName, flag.ExitOnError)
 	f.Usage = func() {
 		Usage(f)
 	}
@@ -17,18 +23,27 @@ func main() {
 	vars := make(map[string]string)
 	outfile := fileVar{os.Stdout, false}
 
+	var showVersion bool
+
 	defer outfile.Close()
 
-	f.Var((mapVar)(vars), "v", "")
 	f.Var((mapVar)(vars), "var", "")
 
 	f.Var(&outfile, "o", "")
 	f.Var(&outfile, "outfile", "")
 
+	f.BoolVar(&showVersion, "v", false, "")
+	f.BoolVar(&showVersion, "version", false, "")
+
 	err := f.Parse(os.Args[1:])
 
 	if err != nil {
 		panic(err)
+	}
+
+	if showVersion {
+		fmt.Fprintln(f.Output(), CliVersion)
+		return
 	}
 
 	infile := f.Arg(0)
@@ -69,11 +84,14 @@ DESCRIPTION
   [path/to/template]
        Path to template file. Read from stdin if ignored or set to -.
 
-  -v <key>=<value>, -var <key>=<value>
+  -var <key>=<value>
        Set template vars. Use multiple times to set multiple vars.
 
   -o <path>, -outfile <path>
        Path to result file. Write to stdout if ignored or set to -.
+
+  -v, -version
+       Show version of this program.
 
   -h, -help
        Show this message.

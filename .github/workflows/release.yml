@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "release version"
+        required: true
+      description:
+        description: "release description"
+        required: false
+        default: ""
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_DIR: release
+      BINARY_NAME: spl
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16
+
+      - name: Build
+        run: |
+          rm -rf "${RELEASE_DIR}"
+          export RELEASE_VER="${{ github.event.inputs.version }}"
+          ./build_release
