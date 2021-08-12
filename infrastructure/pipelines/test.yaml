@@ -11,7 +11,7 @@ steps:
   - task: Go@0
     inputs:
       command: build
-      arguments: -ldflags '-X main.CliVersion=FAKE' .
+      arguments: "-ldflags '-X main.CliVersion=FAKE' ."
       workingDirectory: "$(System.DefaultWorkingDirectory)"
   - script: ./spl -v
     displayName: Test ldflags
