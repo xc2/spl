@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	f := flag.NewFlagSet("smptpl", flag.ExitOnError)
+	f := flag.NewFlagSet("spl", flag.ExitOnError)
 	f.Usage = func() {
 		Usage(f)
 	}

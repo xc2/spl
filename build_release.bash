@@ -1,7 +1,7 @@
 #!/bin/bash
 
-RELEASE_DIR="release"
-BINARY_NAME="smptpl"
+RELEASE_DIR="${RELEASE_DIR:-release}"
+BINARY_NAME="${BINARY_NAME:-spl}"
 
 TARGETS="""
 linux/amd64
@@ -20,5 +20,3 @@ echo "$TARGETS" | while IFS='/' read -r _os _arch; do
     env CGO_ENABLED=0 GOOS="$_os" GOARCH="$_arch" go build -ldflags='-w -s' -buildmode=exe -o "${RELEASE_DIR}/${BINARY_NAME}-${_os}-${_arch}" .
   fi
 done
-
-# go build -ldflags='-w -s' -v -o "${RELEASE_DIR}/${BINARY_NAME}" .
