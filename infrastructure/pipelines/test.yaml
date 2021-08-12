@@ -11,9 +11,9 @@ steps:
   - task: Go@0
     inputs:
       command: build
-      arguments: "-ldflags '-X main.CliVersion=FAKE' ."
-      workingDirectory: "$(System.DefaultWorkingDirectory)"
+      arguments: '-ldflags "-X main.CliVersion=FAKE" .'
   - script: ./spl -v
     displayName: Test ldflags
-  - script: echo -e 'Current directory is {{ env "PWD" }}, value of `foo` is {{ .foo }}\n' | ./spl --var 'foo=bar'
+  - script: |
+      echo 'Current directory is {{ env "PWD" }}, value of `foo` is {{ .foo }}.' | ./spl --var 'foo=bar'
     displayName: Test template
