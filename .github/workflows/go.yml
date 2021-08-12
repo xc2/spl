@@ -1,4 +1,4 @@
-name: Go
+name: Build Test
 
 on:
   push:
@@ -7,9 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      RELEASE_DIR: release
-      BINARY_NAME: spl
     steps:
       - uses: actions/checkout@v2
 
@@ -17,12 +14,9 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.16
-      - name: Install Dependencies
-        run: go mod download
 
       - name: Build
-        run: |
-          rm -rf "$RELEASE_DIR"
-          ./build_release.bash
-          ls -allh $RELEASE_DIR/
-          file $RELEASE_DIR/*
+        run: go build -v .
+
+      - name: Test
+        run: echo 'Current Directory is `{{ env "PWD" }}`, input var of `foo` is `{{ .foo }}`' | ./spl -v 'foo=bar'
