@@ -1,5 +1,6 @@
 variables:
-  RELEASE_VERSION:
+  - name: RELEASE_VERSION
+    value:
 
 pool:
   vmImage: ubuntu-latest
