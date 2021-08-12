@@ -8,9 +8,12 @@ steps:
   - task: GoTool@0
     inputs:
       version: "1.16.7"
-  - script: go build -ldflags '-X main.CliVersion=FAKE' .
-    displayName: Build
+  - task: Go@0
+    inputs:
+      command: build
+      arguments: -ldflags '-X main.CliVersion=FAKE' .
+      workingDirectory: "$(System.DefaultWorkingDirectory)"
   - script: ./spl -v
     displayName: Test ldflags
-  - script: echo 'Current directory is {{ env "PWD" }}, value of `foo` is {{ .foo }}' | ./spl --var 'foo=bar'
+  - script: echo -e 'Current directory is {{ env "PWD" }}, value of `foo` is {{ .foo }}\n' | ./spl --var 'foo=bar'
     displayName: Test template
