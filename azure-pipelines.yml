@@ -10,4 +10,4 @@ steps:
     version: '1.16.7'
 - task: Bash@3
   inputs:
-    filePath: './build-release.bash'
+    filePath: './build_release.bash'
