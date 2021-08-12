@@ -59,6 +59,3 @@ func (f *fileVar) Close() error {
 	}
 	return nil
 }
-func (f *fileVar) IsBoolFlag() bool {
-	return false
-}

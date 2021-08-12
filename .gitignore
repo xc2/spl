@@ -1,3 +1,6 @@
+/smptpl
+!/smptpl/
+
 *.exe
 *.exe~
 *.dll
