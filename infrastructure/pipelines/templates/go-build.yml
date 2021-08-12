@@ -1,0 +1,39 @@
+parameters:
+  - name: targets
+    type: object
+    default:
+      - os: linux
+        arch: amd64
+      - os: linux
+        arch: arm64
+      - os: darwin
+        arch: amd64
+      - os: darwin
+        arch: arm64
+      - os: windows
+        arch: amd64
+      - os: windows
+        arch: arm
+  - name: version
+    type: string
+    default: untagged
+  - name: releaseDir
+    type: string
+    default: release
+  - name: bin
+    type: string
+
+steps:
+  - script: mkdir -p '${{ parameters.releaseDir }}'
+  - ${{ each target in parameters.targets }}:
+      - task: Go@0
+        displayName: "Build for ${{ target.os }}/${{ target.arch }}"
+        command: build
+        arguments: "-ldflags '-w -s -X main.CliName=${{ parameters.bin }} -X main.CliVersion=${{ parameters.version }}' -o '${{ parameters.releaseDir }}/${{ parameters.bin }}-${{ parameters.version }}-${{ target.os }}-${{ target.arch }}'"
+        env:
+          CGO_ENABLED: 0
+          GOOS: ${{ target.os }}
+          GOARCH: ${{ target.arch }}
+  - script: |
+      ls -allh '${{ parameters.releaseDir }}'
+      file '${{ parameters.releaseDir }}/*'

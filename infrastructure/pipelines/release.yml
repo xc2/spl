@@ -1,0 +1,23 @@
+variables:
+  RELEASE_VERSION:
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: GoTool@0
+    inputs:
+      version: "1.16.7"
+  - task: Go@0
+    inputs:
+      command: build
+      arguments: '-ldflags "-X main.CliVersion=FAKE" .'
+  - script: ./spl -v
+    displayName: Test ldflags
+  - script: |
+      echo 'Current directory is {{ env "PWD" }}, value of `foo` is {{ .foo }}.' | ./spl --var 'foo=bar'
+    displayName: Test template
+  - template: templates/go-build.yml
+    parameters:
+      bin: spl
+      version: $(RELEASE_VERSION)
