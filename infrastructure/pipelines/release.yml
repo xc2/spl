@@ -20,5 +20,12 @@ steps:
     parameters:
       bin: spl
       version: $(RELEASE_VERSION)
-  - publish: $(System.DefaultWorkingDirectory)/release
-    artifact: spl
+
+  - task: GitHubRelease@1
+    displayName: "GitHub Release"
+    inputs:
+      gitHubConnection: spl
+      action: edit
+      tag: "v$(RELEASE_VERSION)"
+      assets: "$(System.DefaultWorkingDirectory)/release"
+      isDraft: true
