@@ -4,7 +4,17 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  GOMODCACHE: $(Agent.HomeDirectory)/gomodcache
+
 steps:
+  - task: Cache@2
+    inputs:
+      key: '"gomod" | "$(Agent.OS)" | go.sum'
+      restoreKeys: |
+        gomod | "$(Agent.OS)"
+      path: $(GOMODCACHE)
+    displayName: Cache Go Mod Cache
   - task: GoTool@0
     inputs:
       version: "1.16.7"
