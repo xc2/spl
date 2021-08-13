@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"path"
 	"text/template"
 
 	"github.com/Masterminds/sprig"
@@ -51,7 +52,7 @@ func main() {
 		infile = "-"
 	}
 
-	tmpl := template.New(infile)
+	tmpl := template.New(path.Base(infile))
 	tmpl.Option("missingkey=zero")
 
 	tmpl.Funcs(sprig.GenericFuncMap())

@@ -14,6 +14,7 @@ func ReadStdinToStop() (b []byte, err error) {
 		} else {
 			b = scanner.Bytes()
 		}
+		b = append(b, 0x0a)
 		err = scanner.Err()
 		if err != nil {
 			return
@@ -33,7 +34,6 @@ func TemplateParseFile(t *template.Template, filename string) error {
 		return err
 	}
 	s := string(b)
-	s += "\n"
 
 	_, err = t.Parse(s)
 	if err != nil {
