@@ -36,7 +36,7 @@ func (f *fileVar) Set(s string) error {
 		f.file = os.Stdout
 		f.shouldClose = false
 	} else {
-		fi, err := os.OpenFile(s, os.O_WRONLY|os.O_CREATE, 0644)
+		fi, err := os.OpenFile(s, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 		if err != nil {
 			return err
 		}
