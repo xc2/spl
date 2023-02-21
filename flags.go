@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"os"
 	"strings"
 )
@@ -58,4 +59,14 @@ func (f *fileVar) Close() error {
 		}
 	}
 	return nil
+}
+
+type JsonVar map[string]interface{}
+
+func (j *JsonVar) UnmarshalText(text []byte) error {
+	return json.Unmarshal(text, &j)
+}
+
+func (j JsonVar) MarshalText() ([]byte, error) {
+	return json.Marshal(j)
 }

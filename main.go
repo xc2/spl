@@ -25,6 +25,9 @@ func main() {
 	outfile := fileVar{os.Stdout, false}
 
 	var showVersion bool
+	var jsonVar JsonVar
+
+	a := make(JsonVar)
 
 	defer outfile.Close()
 
@@ -32,6 +35,8 @@ func main() {
 
 	f.Var(&outfile, "o", "")
 	f.Var(&outfile, "outfile", "")
+
+	f.TextVar(&jsonVar, "var.json", a, "")
 
 	f.BoolVar(&showVersion, "v", false, "")
 	f.BoolVar(&showVersion, "version", false, "")
@@ -63,7 +68,7 @@ func main() {
 		panic(err)
 	}
 
-	err = tmpl.Execute(outfile.file, vars)
+	err = tmpl.Execute(outfile.file, jsonVar)
 	if err != nil {
 		panic(err)
 	}
@@ -86,7 +91,12 @@ DESCRIPTION
        Path to template file. Read from stdin if ignored or set to -.
 
   -var <key>=<value>
-       Set template vars. Use multiple times to set multiple vars.
+       Declare template vars.
+       Use multiple times to set multiple vars.
+       Higher priority than -var.json.
+
+  -var.json <json>
+       Declare template vars in json format. Once only.
 
   -o <path>, -outfile <path>
        Path to result file. Write to stdout if ignored or set to -.
